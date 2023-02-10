@@ -1,0 +1,30 @@
+{:aliases {:run {:main mockmechanics.core
+                 :jvm-opts (if (System/getProperty "os.name")
+                              ["-XstartOnFirstThread" "-Djava.awt.headless=true"]
+                              [])}
+           :repl {:dependencies [[cider/cider-nrepl "0.25.5"]]}}
+ ;; Include lwjgl and all native version
+ :deps {
+       org.lwjgl/lwjgl                 {:mvn/version "3.3.1"}
+       org.lwjgl/lwjgl$natives-linux   {:mvn/version "3.3.1", :native-prefix ""}
+       org.lwjgl/lwjgl$natives-macos   {:mvn/version "3.3.1", :native-prefix ""}
+       org.lwjgl/lwjgl$natives-windows {:mvn/version "3.3.1", :native-prefix ""}
+
+       org.lwjgl/lwjgl-opengl                 {:mvn/version "3.3.1"}
+       org.lwjgl/lwjgl-opengl$natives-linux   {:mvn/version "3.3.1", :native-prefix ""}
+       org.lwjgl/lwjgl-opengl$natives-macos   {:mvn/version "3.3.1", :native-prefix ""}
+       org.lwjgl/lwjgl-opengl$natives-windows {:mvn/version "3.3.1", :native-prefix ""}
+
+       org.lwjgl/lwjgl-glfw                 {:mvn/version "3.3.1"}
+       org.lwjgl/lwjgl-glfw$natives-linux   {:mvn/version "3.3.1", :native-prefix ""}
+       org.lwjgl/lwjgl-glfw$natives-macos   {:mvn/version "3.3.1", :native-prefix ""}
+       org.lwjgl/lwjgl-glfw$natives-windows {:mvn/version "3.3.1", :native-prefix ""}
+
+       org.lwjgl/lwjgl-stb                 {:mvn/version "3.3.1"}
+       org.lwjgl/lwjgl-stb$natives-linux   {:mvn/version "3.3.1", :native-prefix ""}
+       org.lwjgl/lwjgl-stb$natives-macos   {:mvn/version "3.3.1", :native-prefix ""}
+       org.lwjgl/lwjgl-stb$natives-windows {:mvn/version "3.3.1", :native-prefix ""}
+       org.clojure/clojure {:mvn/version "1.10.0"}
+       org.clojars.nakkaya/jbullet {:mvn/version "20101010"}
+       org.apache.xmlgraphics/batik-all {:mvn/version "1.14"
+                                         :extension "pom"}}}
