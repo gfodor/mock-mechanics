@@ -10,6 +10,12 @@
                 :classifier "natives-macos-arm64"
                 :native-prefix ""]
                [artifact version
+                :classifier "natives-windows"
+                :native-prefix ""]
+               [artifact version
+                :classifier "natives-windows-arm64"
+                :native-prefix ""]
+               [artifact version
                 :classifier "natives-macos"
                 :native-prefix ""]]))
           names))
