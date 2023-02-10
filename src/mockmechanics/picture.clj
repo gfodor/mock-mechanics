@@ -1,43 +1,9 @@
 (ns mockmechanics.core
   (:require [mockmechanics.library.util :refer :all]
             [mockmechanics.library.xml :refer :all]
-            [clojure.string :refer [split]])
-  (:import org.apache.batik.transcoder.image.ImageTranscoder
-           java.io.FileInputStream
-           org.apache.batik.transcoder.image.ImageTranscoder
-           org.apache.batik.transcoder.TranscoderInput
-           org.apache.batik.transcoder.TranscoderOutput
-           org.apache.batik.transcoder.TranscodingHints
-           org.apache.batik.anim.dom.SVGDOMImplementation
-           org.apache.batik.util.SVGConstants
-           java.io.ByteArrayInputStream
-           java.awt.image.BufferedImage))
+            [clojure.string :refer [split]]))
 
-(defn parse-svg-from-map [document width height]
-  (let [transcoder-hints (new TranscodingHints)
-        result (atom nil)]
-    (.put transcoder-hints ImageTranscoder/KEY_XML_PARSER_VALIDATING Boolean/FALSE)
-    (.put transcoder-hints ImageTranscoder/KEY_DOM_IMPLEMENTATION
-          (SVGDOMImplementation/getDOMImplementation))
-    (.put transcoder-hints ImageTranscoder/KEY_DOCUMENT_ELEMENT_NAMESPACE_URI
-          SVGConstants/SVG_NAMESPACE_URI)
-    (.put transcoder-hints ImageTranscoder/KEY_DOCUMENT_ELEMENT "svg")
-    (.put transcoder-hints ImageTranscoder/KEY_WIDTH (float width))
-    (.put transcoder-hints ImageTranscoder/KEY_HEIGHT (float height))
-
-    (let [string (xml->str document)
-          bais (new ByteArrayInputStream (.getBytes string))
-          input (new TranscoderInput bais)
-          t (proxy [ImageTranscoder] []
-              (createImage [w h]
-                (new BufferedImage w h BufferedImage/TYPE_INT_ARGB))
-
-              (writeImage [image out]
-                (reset! result image)))]
-
-      (.setTranscodingHints t transcoder-hints)
-      (.transcode t input nil)
-      @result)))
+(load "picture-jvm")
 
 (defn get-svg-dimensions [document]
   (let [[_ _ w h] (split (get-in document [:attrs :viewBox]) #" ")]
@@ -65,9 +31,9 @@
     (parse-svg-from-map-with-width document width)))
 
 (defn parse-hex-color [str]
-  [(Integer/parseInt (subs str 0 2) 16)
-   (Integer/parseInt (subs str 2 4) 16)
-   (Integer/parseInt (subs str 4 6) 16)])
+  [(parse-int (subs str 0 2) 16)
+   (parse-int (subs str 2 4) 16)
+   (parse-int (subs str 4 6) 16)])
 
 (defn get-svg-regions [document]
   (let [[dx dy] (get-svg-dimensions document)
@@ -133,7 +99,7 @@
         png-filename (str "res/" base ".png")
         reg-filename (str "res/" base ".reg")]
     (spit reg-filename regions)
-    (ImageIO/write image "png" (new File png-filename))
+    (write-image! image "png" png-filename)
     (assoc-in picture [:regions] regions)))
 
 (defn create-picture [base x y w h]
@@ -141,7 +107,7 @@
         reg-filename (str "res/" base ".reg")]
     (if (file-exists? png-filename)
       (let [regions (read-string (slurp reg-filename))
-            image (ImageIO/read (new File png-filename))]
+            image (read-image png-filename)]
         {:x x
          :y y
          :w (get-image-width image)

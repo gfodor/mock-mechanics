@@ -41,7 +41,7 @@
 (defn location-name->keyword [name]
   (keyword (apply str (clojure.string/replace name #"_" "-"))))
 
-(load "window-clj")
+(load "window-jvm")
 
 (defn recompute-viewport [world width height]
   (let [projection-matrix (matrix/get-perspective

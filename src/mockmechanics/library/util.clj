@@ -7,7 +7,7 @@
 (def pi Math/PI)
 (def e Math/E)
 
-(load "util-clj")
+(load "util-jvm")
 
 (defn to-radians [angle]
   (Math/toRadians angle))
