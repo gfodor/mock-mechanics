@@ -29,85 +29,6 @@
 (load "bone-animation")
 (load "input-indicator")
 
-(do
-1
-
-(defn create-world []
-  (delete-temp-files!)
-
-  (-> (create-base-world)
-      (merge (read-string (str "{" (slurp "settings.clj") "}")))
-      (assoc-in [:num-lines] 1)
-      (assoc-in [:background-meshes :grid] (create-grid-mesh 24 0.5))
-      (assoc-in [:info] (create-info))
-      (assoc-in [:parts] {})
-      (assoc-in [:parts :ground-part] (create-ground-part))
-      (assoc-in [:other-ground]
-                (create-cube-mesh [0 -0.1 0] [1 0 0 0] [12 0.2 12]
-                                  (make-color 40 40 40)))
-      (assoc-in [:graph-box] {:x 343 :y 530
-                              :w 685 :h 150
-                              :buffer (new-image 685 150)
-                              })
-      (assoc-in [:motherboard-box] {:x 343 :y 530
-                                    :w 685 :h 150
-                                    :buffer (new-image 685 150)})
-      (assoc-in [:property-box]
-                (create-picture "property-menu" 240 340 -1 100))
-      (assoc-in [:layer-box]
-                (create-picture "layer-menu" 240 340 -1 200))
-      (create-layer-info)
-      (assoc-in [:command] "")
-      (assoc-in [:bindings] (get-bindings))
-      (assoc-in [:current-color] :red)
-
-      (assoc-in [:action-menu]
-                (create-picture "action-menu" 240 340 40 -1))
-      (assoc-in [:mode-menu]
-                (create-picture "mode-menu" 240 340 40 -1))
-
-      (assoc-in [:color-palette]
-                (create-picture "colors" 340 585 -1 40))
-      (assoc-in [:add-menu]
-                (create-picture "add-menu" 726 675 -1 50))
-      (assoc-in [:add-type] :block)
-
-      (assoc-in [:edit-menu]
-                (create-picture "edit-menu" 210 575 -1 50))
-      (assoc-in [:edit-subcommand] :move)
-
-      (assoc-in [:use-weld-groups] true)
-      (assoc-in [:graph-snap-value] 0.05)
-
-      (assoc-in [:graph-menu]
-                (create-picture "graph-menu" 210 575 -1 30))
-      (assoc-in [:graph-subcommand] :move)
-
-      (assoc-in [:motherboard-menu]
-                (create-picture "motherboard-menu" 210 575 -1 30))
-      (assoc-in [:motherboard-subcommand] :move)
-
-      (assoc-in [:selected-property] 0)
-
-      (create-physics-world)
-      (reset-undo! [:parts :gears])
-      (assoc-in [:mode] :simulation)
-
-      (assoc-in [:track-head-model]
-                (create-cube-mesh [0 -10000 0] [1 0 0 0] 0.2 :white))
-
-      (assoc-in [:cage] (create-wireframe-cube [0 0 0] [1 0 0 0]
-                                               [1 1 1] :white))
-
-      (reset-avatar)
-      (load-avatar-meshes)
-      (place-elements)
-      (create-weld-groups)
-      (create-update-cube)
-
-      ))
-  (reset-world!)
-  )
 
 (defn update-world [world elapsed]
   (let [world (run-animation world elapsed)
@@ -312,3 +233,84 @@
       (spheres-moving? world)
       (not (nil? (:mouse-force world)))
       (:camera-rotating world)))
+
+(do
+1
+
+(defn create-world []
+  (delete-temp-files!)
+
+  (-> (create-base-world)
+      (merge (read-string (str "{" (slurp "settings.clj") "}")))
+      (assoc-in [:num-lines] 1)
+      (assoc-in [:background-meshes :grid] (create-grid-mesh 24 0.5))
+      (assoc-in [:info] (create-info))
+      (assoc-in [:parts] {})
+      (assoc-in [:parts :ground-part] (create-ground-part))
+      (assoc-in [:other-ground]
+                (create-cube-mesh [0 -0.1 0] [1 0 0 0] [12 0.2 12]
+                                  (make-color 40 40 40)))
+      (assoc-in [:graph-box] {:x 343 :y 530
+                              :w 685 :h 150
+                              :buffer (new-image 685 150)
+                              })
+      (assoc-in [:motherboard-box] {:x 343 :y 530
+                                    :w 685 :h 150
+                                    :buffer (new-image 685 150)})
+      (assoc-in [:property-box]
+                (create-picture "property-menu" 240 340 -1 100))
+      (assoc-in [:layer-box]
+                (create-picture "layer-menu" 240 340 -1 200))
+      (create-layer-info)
+      (assoc-in [:command] "")
+      (assoc-in [:bindings] (get-bindings))
+      (assoc-in [:current-color] :red)
+
+      (assoc-in [:action-menu]
+                (create-picture "action-menu" 240 340 40 -1))
+      (assoc-in [:mode-menu]
+                (create-picture "mode-menu" 240 340 40 -1))
+
+      (assoc-in [:color-palette]
+                (create-picture "colors" 340 585 -1 40))
+      (assoc-in [:add-menu]
+                (create-picture "add-menu" 726 675 -1 50))
+      (assoc-in [:add-type] :block)
+
+      (assoc-in [:edit-menu]
+                (create-picture "edit-menu" 210 575 -1 50))
+      (assoc-in [:edit-subcommand] :move)
+
+      (assoc-in [:use-weld-groups] true)
+      (assoc-in [:graph-snap-value] 0.05)
+
+      (assoc-in [:graph-menu]
+                (create-picture "graph-menu" 210 575 -1 30))
+      (assoc-in [:graph-subcommand] :move)
+
+      (assoc-in [:motherboard-menu]
+                (create-picture "motherboard-menu" 210 575 -1 30))
+      (assoc-in [:motherboard-subcommand] :move)
+
+      (assoc-in [:selected-property] 0)
+
+      (create-physics-world)
+      (reset-undo! [:parts :gears])
+      (assoc-in [:mode] :simulation)
+
+      (assoc-in [:track-head-model]
+                (create-cube-mesh [0 -10000 0] [1 0 0 0] 0.2 :white))
+
+      (assoc-in [:cage] (create-wireframe-cube [0 0 0] [1 0 0 0]
+                                               [1 1 1] :white))
+
+      (reset-avatar)
+      (load-avatar-meshes)
+      (place-elements)
+      (create-weld-groups)
+      (create-update-cube)
+
+      ))
+  (reset-world!)
+  (-main)
+  )
