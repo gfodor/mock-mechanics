@@ -7,7 +7,7 @@
 (load "motherboard-mode")
 (load "color-mode")
 (load "layer-mode")
-(load "physics-mode")
+;; TODO PHYSICS (load "physics-mode")
 (load "avatar-mode")
 
 (defn get-function [mode function]

@@ -172,5 +172,5 @@
     (-> world
         (compute-root-relative-transforms parts groups)
         (assoc-in [:weld-groups] weld-groups)
-        (create-part-bodies parts groups)
+        ;; TODO PHYSICS (create-part-bodies parts groups)
         (compute-transforms :weld-groups))))

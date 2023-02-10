@@ -155,14 +155,6 @@
 (defn find-if [pred coll]
   (first (filter pred coll)))
 
-(defn parse-int [string]
-  (Integer/parseInt string))
-
-(defn parse-float [string]
-  (try
-    (Float/parseFloat string)
-    (catch Exception e nil)))
-
 (defn create-combinations [& lists]
   (if (= (count lists) 1)
     (map vector (first lists))

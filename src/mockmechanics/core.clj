@@ -29,6 +29,11 @@
 (load "bone-animation")
 (load "input-indicator")
 
+;; TODO PHYSICS
+(defn recompute-body-transforms! [world] world)
+(defn step-simulation! [planet elapsed] planet)
+(defn draw-spheres! [world] world)
+(defn spheres-moving? [world] false)
 
 (defn update-world [world elapsed]
   (let [world (run-animation world elapsed)
@@ -294,7 +299,7 @@
 
       (assoc-in [:selected-property] 0)
 
-      (create-physics-world)
+      ;; TODO PHYSICS (create-physics-world)
       (reset-undo! [:parts :gears])
       (assoc-in [:mode] :simulation)
 
