@@ -12,4 +12,4 @@
                 0 0 z 0
                 0 0 0 1]))
 
-(load "matrix-jvm")
+(load "matrix-js")

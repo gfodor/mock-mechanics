@@ -3,27 +3,7 @@
             [mockmechanics.library.vector :as vector]
             [mockmechanics.library.matrix :as matrix]))
 
-(load "transforms-jvm")
-
-(defn get-transform-matrix [transform]
-  (let [matrix (float-array (range 16))]
-    (.getOpenGLMatrix transform matrix)
-    matrix))
-
-(defn axis-angle->quaternion [[ax ay az] angle]
-  (let [quat (create-quat-4f)]
-    (.set quat (create-axis-angle-4f ax ay az (util/to-radians angle)))
-    quat))
-
-(defn quaternion->axis-angle [quaternion]
-  (let [axis-angle (create-axis-angle-4f 0 0 0 0)]
-    (.set axis-angle quaternion)
-    [(.-x axis-angle) (.-y axis-angle)
-     (.-z axis-angle) (util/to-degrees (.-angle axis-angle))]))
-
-(defn get-transform-rotation [transform]
-  (let [rotation (create-quat-4f)]
-    (quaternion->axis-angle (.getRotation transform rotation))))
+(load "transforms-js")
 
 (defn transform->matrix [transform]
   (vec (get-transform-matrix transform)))
@@ -54,14 +34,6 @@
         m (matrix/multiply ma imb)]
     (matrix->transform m)))
 
-(defn make-transform [[x y z] [ax ay az angle]]
-  (let [transform (create-transform)
-        orientation (create-quat-4f)]
-    (.set (.origin transform) (create-vector-3f x y z))
-    (.set orientation (axis-angle->quaternion [ax ay az] angle))
-    (.setRotation transform orientation)
-    transform))
-
 (defn apply-transform [transform point]
   (let [matrix (get-transform-matrix transform)
         vector (float-array (conj (vec point) 1))]
@@ -71,10 +43,6 @@
   (let [rotation (get-transform-rotation transform)
         rotation-transform (make-transform [0 0 0] rotation)]
     (apply-transform rotation-transform point)))
-
-(defn get-transform-position [transform]
-  (let [vec (.-origin transform)]
-    [(.-x vec) (.-y vec) (.-z vec)]))
 
 (defn get-rotation-component [transform]
   (let [rotation (get-transform-rotation transform)]

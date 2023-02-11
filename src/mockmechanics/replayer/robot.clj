@@ -1,11 +1,9 @@
-
-(import java.awt.Robot)
-(import java.awt.event.InputEvent)
-
 (def robot (atom nil))
 
+(load "replayer/robot-js")
+
 (defn reset-robot! []
-  (reset! robot {:robot (new Robot)
+  (reset! robot {:robot (make-robot)
                  :origin (get-window-coordinates)
                  :active false}))
 
@@ -14,12 +12,6 @@
         [ox oy] origin]
     (.mouseMove robot (+ ox x) (+ oy y))))
 
-(defn get-button-mask [name]
-  (case name
-    :right InputEvent/BUTTON3_DOWN_MASK
-    :left InputEvent/BUTTON1_DOWN_MASK
-    :middle InputEvent/BUTTON2_DOWN_MASK))
-
 (defn robot-set-active! [value]
   (swap! robot
          (fn [r]
@@ -27,8 +19,5 @@
                (assoc-in [:active] value)
                (assoc-in [:origin] (get-window-coordinates))))))
 
-(defn robot-mouse-press [button]
-  (.mousePress (:robot @robot) (get-button-mask button)))
-
-(defn robot-mouse-release [button]
-  (.mouseRelease (:robot @robot) (get-button-mask button)))
+(defn robot-mouse-press [button] (robot-mouse-press-robot (:robot @robot) button))
+(defn robot-mouse-release [button] (robot-mouse-release-robot (:robot @robot) button))

@@ -2,7 +2,28 @@
   (:require [clojure.set :refer [difference union map-invert]]
             [clojure.string :refer [split join]]))
 
-(load "util-jvm")
+(load "util-js")
+
+(def colors {:medium-gray (make-color 128 128 128)
+             :gray (make-color 128 128 128)
+             :orange (make-color 255 102 0)
+             :white (make-color 255 255 255)
+             :light-gray (make-color 179 179 179)
+             :yellow (make-color 255 255 0)
+             :green (make-color 0 255 0)
+             :dark-red (make-color 128 0 0)
+             :dark-yellow (make-color 255 204 0)
+             :dark-gray (make-color 51 51 51)
+             :red (make-color 255 0 0)
+             :blue (make-color 0 0 255)
+             :dark-green (make-color 0 145 0)
+             :dark-blue (make-color 0 0 128)
+             :almost-black (make-color 10 10 10)
+             :pink (make-color 255 0 255)
+             :teal (make-color 170 212 0)
+             :purple (make-color 128 0 175)
+             :beige (make-color 170 136 0)
+             :black (make-color 0 0 0)})
 
 (defn within [value min max]
   (cond
@@ -51,7 +72,7 @@
         r (int (* (get-red color) amount))
         g (int (* (get-green color) amount))
         b (int (* (get-blue color) amount))]
-    (new Color r g b)))
+    (make-color r g b)))
 
 (defn color= [a b]
   (let [a (get-color a)
