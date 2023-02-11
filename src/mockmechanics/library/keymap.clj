@@ -1,3 +1,3 @@
 (ns mockmechanics.library.keymap)
 
-(load "keymap-jvm")
+(load "keymap-js")

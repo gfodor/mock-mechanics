@@ -75,9 +75,6 @@
 (declare create-layer-info)
 (declare reset-avatar)
 
-(defn create-directory! [name]
-  (.mkdirs (new File name)))
-
 (defn new-file [world]
   (set-title! "-")
   (reset! motherboard-activation-count 0)

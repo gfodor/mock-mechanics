@@ -1,4 +1,4 @@
-(load "synthesizer-jvm")
+(load "synthesizer-js")
 
 (defn get-frequency [note]
   (* 8.175805469120409 (Math/pow 1.059463 note)))

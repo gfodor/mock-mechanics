@@ -3,7 +3,7 @@
             [mockmechanics.library.xml :refer :all]
             [clojure.string :refer [split]]))
 
-(load "picture-jvm")
+(load "picture-js")
 
 (defn get-svg-dimensions [document]
   (let [[_ _ w h] (split (get-in document [:attrs :viewBox]) #" ")]

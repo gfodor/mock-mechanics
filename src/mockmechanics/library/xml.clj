@@ -1,7 +1,7 @@
 (ns mockmechanics.library.xml
   (:require [mockmechanics.library.util :refer :all]))
 
-(load "xml-jvm")
+(load "xml-js")
 
 (defn get-children [map child-name]
   (filter (fn [child]

@@ -667,4 +667,4 @@
 
     (GL11/glDrawArrays GL11/GL_TRIANGLES 0 num-vertices)))
 
-(defn gen-textures [] GL11/glGenTextures)
+(defn gen-textures [] (GL11/glGenTextures))

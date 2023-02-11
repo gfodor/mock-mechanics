@@ -117,3 +117,6 @@
 (defn get-window-coordinates []
   (map parse-int
        (clojure.string/split (:out (sh "./window-coords.sh")) #"\n")))
+
+(defn create-directory! [name]
+  (.mkdirs (new File name)))
