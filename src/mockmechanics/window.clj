@@ -1,7 +1,9 @@
 (ns mockmechanics.core
   (:require [mockmechanics.library.util :refer :all]
             [mockmechanics.library.matrix :as matrix]
-            [mockmechanics.library.vector :as vector]))
+            [mockmechanics.library.vector :as vector])
+  (:import java.lang.System
+           java.io.OutputStreamWriter))
 
 (declare draw-2d!)
 (declare draw-3d!)
@@ -251,8 +253,8 @@
   world)
 
 (defn -main [& args]
+  (reset-out!)
   (window-init-and-run! loop!)
-  (reset! out *out*)
   nil
   )
 

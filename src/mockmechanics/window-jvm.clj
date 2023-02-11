@@ -42,6 +42,9 @@
            java.nio.ByteBuffer
            java.nio.ByteOrder))
 
+(defn reset-out! []
+  (reset! out (OutputStreamWriter. System/out)))
+
 (defn gl-println [& forms]
   (println forms)
   (try
