@@ -78,12 +78,6 @@
 (defn create-directory! [name]
   (.mkdirs (new File name)))
 
-(defn delete-temp-files! []
-  (let [files (filter #(.isFile %)
-                      (file-seq (io/file "temp")))]
-    (doseq [file files]
-      (io/delete-file file))))
-
 (defn new-file [world]
   (set-title! "-")
   (reset! motherboard-activation-count 0)

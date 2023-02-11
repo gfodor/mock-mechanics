@@ -1,6 +1,8 @@
 (ns mockmechanics.library.util
   (:require [clojure.set :refer [difference union map-invert]]
-            [clojure.string :refer [split join]])
+            [clojure.string :refer [split join]]
+            [clojure.java.io :as io]
+            [clojure.java.shell :refer [sh]])
   (:import java.awt.Color
            java.io.File))
 
@@ -105,3 +107,13 @@
 
 (defn round [n]
   (Math/round (float n)))
+
+(defn delete-temp-files! []
+  (let [files (filter #(.isFile %)
+                      (file-seq (io/file "temp")))]
+    (doseq [file files]
+      (io/delete-file file))))
+
+(defn get-window-coordinates []
+  (map parse-int
+       (clojure.string/split (:out (sh "./window-coords.sh")) #"\n")))

@@ -1,7 +1,7 @@
 (ns mockmechanics.core
   (:require [mockmechanics.library.util :refer :all]
             [mockmechanics.library.vector :as vector]
-            [clojure.java.shell :refer [sh]]))
+  ))
 
 (declare get-element-value)
 
@@ -266,7 +266,7 @@
         filename (get-script-filename (:selected-motherboard world))]
     (create-directory! "temp")
     (spit filename (:script motherboard))
-    (run-in-thread! (fn [] (sh "emacs" "-rv" filename)))
+    ;; TODO EDITOR (run-in-thread! (fn [] (sh "emacs" "-rv" filename)))
     (show-message world "Opening editor...")))
 
 (defn update-scripts [world]

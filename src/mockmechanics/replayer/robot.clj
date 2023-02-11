@@ -2,10 +2,6 @@
 (import java.awt.Robot)
 (import java.awt.event.InputEvent)
 
-(defn get-window-coordinates []
-  (map parse-int
-       (clojure.string/split (:out (sh "./window-coords.sh")) #"\n")))
-
 (def robot (atom nil))
 
 (defn reset-robot! []
