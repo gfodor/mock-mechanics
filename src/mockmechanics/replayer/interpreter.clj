@@ -339,20 +339,18 @@
     (when wait
       (reset! wait-chip-flag true))
 
-    (.start
-      (new Thread
-           (proxy [Runnable] []
-             (run []
-               (robot-move (take 2 (first events)))
-               (doseq [i (range 1 (count events))]
-                 (let [[x y time type button] (nth events i)
-                       delay (- time (nth (nth events (dec i)) 2))]
-                   (sleep delay)
-                   (case type
-                     :pressed (robot-mouse-press button)
-                     :moved (robot-move [x y])
-                     :released (robot-mouse-release button))))
-               (robot-set-active! false)))))
+    (run-in-thread!
+       (fn []
+         (robot-move (take 2 (first events)))
+         (doseq [i (range 1 (count events))]
+           (let [[x y time type button] (nth events i)
+                 delay (- time (nth (nth events (dec i)) 2))]
+             (sleep delay)
+             (case type
+               :pressed (robot-mouse-press button)
+               :moved (robot-move [x y])
+               :released (robot-mouse-release button))))
+         (robot-set-active! false)))
     world))
 
 (defn run-set-variable-instruction [world instruction]

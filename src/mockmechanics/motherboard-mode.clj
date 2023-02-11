@@ -266,12 +266,7 @@
         filename (get-script-filename (:selected-motherboard world))]
     (create-directory! "temp")
     (spit filename (:script motherboard))
-    (.start
-      (new Thread
-           (proxy [Runnable] []
-             (run []
-               (sh "emacs" "-rv" filename)
-               ))))
+    (run-in-thread! (fn [] (sh "emacs" "-rv" filename)))
     (show-message world "Opening editor...")))
 
 (defn update-scripts [world]
@@ -292,13 +287,11 @@
           sorted-pins (get-sorted-pin-list world motherboard-name)
           text (read-string (str "(do" (:script motherboard) ")"))
           code (process-code text sorted-pins)]
-      (.start
-        (new Thread
-             (proxy [Runnable] []
-               (run []
-                 (swap! motherboard-activation-count inc)
-                 ((eval code) pin-name)
-                 (swap! motherboard-activation-count dec))))))
+      (run-in-thread!
+         (fn []
+           (swap! motherboard-activation-count inc)
+           ((eval code) pin-name)
+           (swap! motherboard-activation-count dec))))
     (catch Exception e
       (user-message! e)
       (user-message! "script failed")))

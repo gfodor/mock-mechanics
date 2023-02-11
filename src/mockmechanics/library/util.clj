@@ -288,7 +288,7 @@
   (.start
     (new Thread
          (proxy [Runnable] []
-           (run []
+           (fn []
              (try
                (sleep time)
                (func)

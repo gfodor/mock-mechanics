@@ -8,3 +8,8 @@
   (try
     (Float/parseFloat string)
     (catch Exception e nil)))
+
+(defn run-in-thread! [f]
+  (let [thread (Thread. f)]
+    (.start thread)
+    thread))

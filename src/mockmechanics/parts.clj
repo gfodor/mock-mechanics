@@ -506,24 +506,21 @@
   (assoc-in world [:use-weld-groups] false))
 
 (defn async-create-weld-groups [w]
-  (.start
-    (new Thread
-         (proxy [Runnable] []
-           (run []
-             (try
-               (let [fast-world (create-weld-groups w)
-                     ]
-                 (set-thing! [:weld-groups]
-                             (:weld-groups fast-world))
+  (run-in-thread!
+     (fn []
+         (try
+           (let [fast-world (create-weld-groups w) ]
+             (set-thing! [:weld-groups]
+                         (:weld-groups fast-world))
 
-                 (set-thing! [:root-relative-transforms]
-                             (:root-relative-transforms fast-world))
+             (set-thing! [:root-relative-transforms]
+                         (:root-relative-transforms fast-world))
 
-                 (set-thing! [:bodies] (:bodies fast-world))
+             (set-thing! [:bodies] (:bodies fast-world))
 
-                 (set-thing! [:use-weld-groups] true)
-                 (redraw!))
-               (catch Exception e))))))
+             (set-thing! [:use-weld-groups] true)
+             (redraw!))
+           (catch Exception e))))
   w)
 
 (declare reset-wagons)

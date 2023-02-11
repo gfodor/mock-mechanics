@@ -202,11 +202,7 @@
 
 (defn toggle-run-instructions [world]
   (when (:replay-filename world)
-    (.start
-      (new Thread
-           (proxy [Runnable] []
-             (run []
-               (run-instructions!))))))
+    (run-in-thread! (fn [] (run-instructions!))))
   world)
 
 (defn replay-forward [world]
