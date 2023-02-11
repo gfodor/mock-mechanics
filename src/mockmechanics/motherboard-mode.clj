@@ -141,7 +141,7 @@
                       [px py] (get-pixel-coordinates world spec)
                       c (get-color-vector (get-pixel image (+ 10 (* 20 px)) (+ 10 (* 20 py))))
                       [r g b _] (map #(int (* 255 %)) c)]
-                  (new Color r g b))
+                  (make-color r g b))
                 (:color part))]
     (get-reverse-color color)))
 

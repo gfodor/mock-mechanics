@@ -8,6 +8,8 @@
            org.apache.batik.transcoder.TranscodingHints
            org.apache.batik.anim.dom.SVGDOMImplementation
            org.apache.batik.util.SVGConstants
+           java.io.File
+           javax.imageio.ImageIO
            java.io.ByteArrayInputStream
            java.awt.image.BufferedImage))
 

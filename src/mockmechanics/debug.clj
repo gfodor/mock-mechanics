@@ -106,5 +106,5 @@
                         0.0
                         1.0)]
       (set-thing! [:update-cube :color 1] green-value)
-      (GL11/glClear GL11/GL_DEPTH_BUFFER_BIT)
+      (clear-depth-buffer!)
       (draw-mesh! world mesh))))

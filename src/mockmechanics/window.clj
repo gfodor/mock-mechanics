@@ -41,7 +41,7 @@
 (defn location-name->keyword [name]
   (keyword (apply str (clojure.string/replace name #"_" "-"))))
 
-(load "window-jvm")
+(load "window-js")
 
 (defn recompute-viewport [world width height]
   (let [projection-matrix (matrix/get-perspective
@@ -359,7 +359,7 @@
                    :scale scale}]
     (cond
       (string? skin)
-      (let [texture-id (GL11/glGenTextures)
+      (let [texture-id (gen-textures)
             tex-coords (vec (flatten tex-coords))]
         (-> base-mesh
             (assoc-in [:draw-fn] draw-textured-mesh!)
@@ -565,7 +565,7 @@
                   1 -1  0   1  1  0   -1  1  0]
         texture-coordinates [0 1   1 1   0 0
                              1 1   1 0   0 0]
-        texture-id (GL11/glGenTextures)
+        texture-id (gen-textures)
         mesh {:vertices-buffer (get-float-buffer vertices)
               :image image
               :texture-coordinates-buffer (get-float-buffer texture-coordinates)

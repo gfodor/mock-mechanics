@@ -226,7 +226,7 @@
                    :normals-buffer (get-float-buffer normals)
                    :transform (make-transform position rotation)
                    :scale scale}
-        texture-id (GL11/glGenTextures)
+        texture-id (gen-textures)
         tex-coords (vec (flatten tex-coords))
         width (* 400 sx)
         height (* 400 sz)

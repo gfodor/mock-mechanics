@@ -107,7 +107,7 @@
   (let [parent-1 (get-in world [:parts parent-1-name])
         parent-2 (get-in world [:parts parent-2-name])
         layer (apply min (:visible-layers world))
-        color-1 (new Color 10 10 10)
+        color-1 (make-color 10 10 10)
         gear-1 (create-part :gear color-1 layer (:info world))
         [gear-1-name gear-2-name] (if (empty? extra)
                                     [(gen-keyword :gear)
@@ -120,7 +120,7 @@
         gear-1-transform (combine-transforms
                            (:transform parent-1)
                            (make-transform offset [1 0 0 0]))
-        color-2 (new Color 128 128 128)
+        color-2 (make-color 128 128 128)
         gear-2 (create-part :gear color-2 layer (:info world))
         parent-2-plane (get-track-plane parent-2)
         gear-1-point (get-transform-position gear-1-transform)
@@ -222,7 +222,7 @@
         track-position (get-part-position world track-name)
         wagon-position (get-part-position world wagon-name)
         layer (apply min (:visible-layers world))
-        color-1 (new Color 10 10 10)
+        color-1 (make-color 10 10 10)
         gear (create-part :gear color-1 layer (:info world))
         gear-name (gen-keyword :gear)
         track-plane (get-track-plane track)
@@ -242,7 +242,7 @@
         d (point-plane-distance
             wagon-position
             (line->plane [track-position to-wagon]))
-        color-2 (new Color 128 128 128)
+        color-2 (make-color 128 128 128)
         rack (create-part :rack color-2 layer (:info world))
         rack-name (gen-keyword :rack)
         gear-position (get-transform-position gear-transform)
