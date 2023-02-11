@@ -80,7 +80,7 @@
     (sort #(< (f %1) (f %2)) coll)))
 
 (defn parse-animation [filename order]
-  (with-open [reader (clojure.java.io/reader filename)]
+  (with-open [reader (reader-for-filename filename)]
     (let [lines (doall (line-seq reader))
           lines (remove (fn [line]
                           (or (empty? line)
@@ -142,7 +142,7 @@
   (vec (matrix/get-inverse (float-array m))))
 
 (defn create-animated-mesh [filename position rotation scale]
-  (with-open [reader (clojure.java.io/reader filename)]
+  (with-open [reader (reader-for-filename filename)]
     (let [materials (parse-materials (change-extension filename "mtl"))
           lines (filter (fn [line]
                           (or (.startsWith line "o")

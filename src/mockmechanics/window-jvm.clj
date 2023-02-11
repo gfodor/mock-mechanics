@@ -17,6 +17,8 @@
            org.lwjgl.glfw.GLFWWindowSizeCallback
            org.lwjgl.glfw.GLFWWindowFocusCallback
            org.lwjgl.glfw.GLFWWindowMaximizeCallback
+           java.lang.System
+           java.io.OutputStreamWriter
            java.awt.image.BufferedImage
            javax.imageio.ImageIO
            java.io.File

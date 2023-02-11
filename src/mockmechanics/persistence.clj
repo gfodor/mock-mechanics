@@ -9,9 +9,9 @@
 (defn get-simple-color [color]
   (if (keyword? color)
     color
-    [(.getRed color)
-     (.getGreen color)
-     (.getBlue color)]))
+    [(get-red color)
+     (get-green color)
+     (get-blue color)]))
 
 (defn get-simple-texture [texture]
   (let [image (:image texture)

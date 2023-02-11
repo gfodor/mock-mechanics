@@ -172,7 +172,7 @@
                       sorted-names)
         filename (str "replayer/" filename ".txt")]
     (create-directory! "replayer")
-    (with-open [writer (clojure.java.io/writer filename)]
+    (with-open [writer (writer-for-filename filename)]
       (doseq [part-name sorted-names]
         (create-part-instructions writer world part-name)))
 

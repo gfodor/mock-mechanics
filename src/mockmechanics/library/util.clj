@@ -1,43 +1,8 @@
 (ns mockmechanics.library.util
   (:require [clojure.set :refer [difference union map-invert]]
-            [clojure.string :refer [split join]])
-  (:import java.awt.Color
-           java.io.File))
-
-(def pi Math/PI)
-(def e Math/E)
+            [clojure.string :refer [split join]]))
 
 (load "util-jvm")
-
-(defn to-radians [angle]
-  (Math/toRadians angle))
-
-(defn to-degrees [angle]
-  (Math/toDegrees angle))
-
-(defn sin [angle]
-  (Math/sin (to-radians angle)))
-
-(defn cos [angle]
-  (Math/cos (to-radians angle)))
-
-(defn acos [value]
-  (to-degrees (Math/acos value)))
-
-(defn atan2 [y x]
-  (Math/toDegrees (Math/atan2 y x)))
-
-(defn sqrt [x]
-  (Math/sqrt x))
-
-(defn abs [x]
-  (Math/abs x))
-
-(defn pow [n e]
-  (Math/pow n e))
-
-(defn round [n]
-  (Math/round (float n)))
 
 (defn within [value min max]
   (cond
@@ -68,43 +33,10 @@
 (defn rand-range [min max]
   (+ (* (rand) (- max min)) min))
 
-(def colors {:medium-gray (new Color 128 128 128)
-             :gray (new Color 128 128 128)
-             :orange (new Color 255 102 0)
-             :white (new Color 255 255 255)
-             :light-gray (new Color 179 179 179)
-             :yellow (new Color 255 255 0)
-             :green (new Color 0 255 0)
-             :dark-red (new Color 128 0 0)
-             :dark-yellow (new Color 255 204 0)
-             :dark-gray (new Color 51 51 51)
-             :red (new Color 255 0 0)
-             :blue (new Color 0 0 255)
-             :dark-green (new Color 0 145 0)
-             :dark-blue (new Color 0 0 128)
-             :almost-black (new Color 10 10 10)
-             :pink (new Color 255 0 255)
-             :teal (new Color 170 212 0)
-             :purple (new Color 128 0 175)
-             :beige (new Color 170 136 0)
-             :black (new Color 0 0 0)})
-
 (defn get-color [name]
   (if (keyword? name)
     (get colors name)
     name))
-
-(defn make-color [r g b]
-  (new Color r g b))
-
-(defn get-red [color]
-  (.getRed color))
-
-(defn get-green [color]
-  (.getGreen color))
-
-(defn get-blue [color]
-  (.getBlue color))
 
 (defn get-color-vector [color-name]
   (let [color (get-color color-name)
@@ -116,9 +48,9 @@
 (defn get-dark-color [color]
   (let [color (get-color color)
         amount 0.3
-        r (int (* (.getRed color) amount))
-        g (int (* (.getGreen color) amount))
-        b (int (* (.getBlue color) amount))]
+        r (int (* (get-red color) amount))
+        g (int (* (get-green color) amount))
+        b (int (* (get-blue color) amount))]
     (new Color r g b)))
 
 (defn color= [a b]
@@ -131,9 +63,6 @@
 
 (defn near-zero? [value]
   (< (abs value) 0.001))
-
-(defn sleep [n]
-  (Thread/sleep n))
 
 (defn rotate-list [list]
   (reverse (into () (conj (vec (rest list)) (first list)))))
@@ -201,9 +130,6 @@
     (and (< x1 x x2)
          (< y1 y y2))))
 
-(defn get-current-time []
-  (System/currentTimeMillis))
-
 (defn vector-insert [seq element index]
   (let [before (take index seq)
         after (nthrest seq index)]
@@ -219,14 +145,6 @@
 
 (defn map-map [func m]
   (apply merge (map func m)))
-
-(defn file-exists? [filename]
-  (.exists (clojure.java.io/file filename)))
-
-(defn get-files-at [filename]
-  (let [directory (clojure.java.io/file filename)]
-    (map #(.getName %)
-         (filter #(.isFile %) (file-seq directory)))))
 
 (defn join-keywords [& keywords]
   (keyword (apply str (interpose "-" (map (fn [k]
@@ -285,14 +203,12 @@
           (range j)))
 
 (defn do-later [func time]
-  (.start
-    (new Thread
-         (proxy [Runnable] []
-           (fn []
-             (try
-               (sleep time)
-               (func)
-               (catch Exception e)))))))
+  (run-in-thread!
+         (fn []
+           (try
+             (sleep time)
+             (func)
+             (catch Exception e)))))
 
 (defn snap-axis [v]
   (let [m (apply max (map abs v))]
@@ -309,14 +225,11 @@
 (defn get-reverse-color [color]
   (first (find-if #(color= color (second %)) colors)))
 
-(defn get-pixel [image x y]
-  (new Color (.getRGB image x y)))
-
 (defn dekeyword [k]
   (subs (str k) 1))
 
 (defn read-lines [filename]
-  (with-open [rdr (clojure.java.io/reader filename)]
+  (with-open [rdr (reader-for-filename filename)]
     (vec (line-seq rdr))))
 
 (defn interpolate-values [a b t]

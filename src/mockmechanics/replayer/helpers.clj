@@ -8,7 +8,7 @@
         h @window-height
         points (concat [[w 0 0] [w h 0] [0 h 0]] points)
         ratio (float (/ w h))]
-    (with-open [writer (clojure.java.io/writer filename)]
+    (with-open [writer (writer-for-filename filename)]
       (.write writer (format "# final-time %s\n" final-time))
       (.write writer (format "# width %s\n" w))
       (.write writer "o Path\n")
@@ -49,7 +49,7 @@
 (defn create-extended! [source destination]
   (let [source (str "replayer/" source ".txt")
         destination (str "replayer/" destination ".txt")]
-    (with-open [writer (clojure.java.io/writer destination)]
+    (with-open [writer (writer-for-filename destination)]
       (let [instructions (-> source
                              (read-lines)
                              (extend-instructions))]

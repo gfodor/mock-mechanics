@@ -1,9 +1,7 @@
 (ns mockmechanics.core
   (:require [mockmechanics.library.util :refer :all]
             [mockmechanics.library.matrix :as matrix]
-            [mockmechanics.library.vector :as vector])
-  (:import java.lang.System
-           java.io.OutputStreamWriter))
+            [mockmechanics.library.vector :as vector]))
 
 (declare draw-2d!)
 (declare draw-3d!)
