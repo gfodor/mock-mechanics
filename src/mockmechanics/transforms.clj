@@ -1,12 +1,9 @@
 (ns mockmechanics.core
   (:require [mockmechanics.library.util :as util]
             [mockmechanics.library.vector :as vector]
-            [mockmechanics.library.matrix :as matrix])
-  (:import javax.vecmath.Matrix4f
-           javax.vecmath.Quat4f
-           javax.vecmath.Vector3f
-           javax.vecmath.AxisAngle4f
-           com.bulletphysics.linearmath.Transform))
+            [mockmechanics.library.matrix :as matrix]))
+
+(load "transforms-jvm")
 
 (defn get-transform-matrix [transform]
   (let [matrix (float-array (range 16))]
@@ -14,18 +11,18 @@
     matrix))
 
 (defn axis-angle->quaternion [[ax ay az] angle]
-  (let [quat (new Quat4f)]
-    (.set quat (new AxisAngle4f ax ay az (util/to-radians angle)))
+  (let [quat (create-quat-4f)]
+    (.set quat (create-axis-angle-4f ax ay az (util/to-radians angle)))
     quat))
 
 (defn quaternion->axis-angle [quaternion]
-  (let [axis-angle (new AxisAngle4f)]
+  (let [axis-angle (create-axis-angle-4f 0 0 0 0)]
     (.set axis-angle quaternion)
     [(.-x axis-angle) (.-y axis-angle)
      (.-z axis-angle) (util/to-degrees (.-angle axis-angle))]))
 
 (defn get-transform-rotation [transform]
-  (let [rotation (new Quat4f)]
+  (let [rotation (create-quat-4f)]
     (quaternion->axis-angle (.getRotation transform rotation))))
 
 (defn transform->matrix [transform]
@@ -36,13 +33,13 @@
                              m01 m11 m21 m31
                              m02 m12 m22 m32
                              m03 m13 m23 m33]
-                          (new Matrix4f
+                          (create-matrix-4f
                                m00 m01 m02 m03
                                m10 m11 m12 m13
                                m20 m21 m22 m23
                                m30 m31 m32 m33))
                         matrix)]
-    (new Transform matrix4f)))
+    (create-transform-from-matrix-4f matrix4f)))
 
 (defn combine-transforms [a b]
   (let [ma (transform->matrix a)
@@ -58,9 +55,9 @@
     (matrix->transform m)))
 
 (defn make-transform [[x y z] [ax ay az angle]]
-  (let [transform (new Transform)
-        orientation (new Quat4f)]
-    (.set (.origin transform) (new Vector3f x y z))
+  (let [transform (create-transform)
+        orientation (create-quat-4f)]
+    (.set (.origin transform) (create-vector-3f x y z))
     (.set orientation (axis-angle->quaternion [ax ay az] angle))
     (.setRotation transform orientation)
     transform))
